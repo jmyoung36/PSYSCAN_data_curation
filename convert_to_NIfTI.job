@@ -1,0 +1,8 @@
+#$ -M jonathan.young@kcl.ac.uk
+#$ -m aes
+#$ -r y
+#$ -l mem_total=1G
+#$ -q global
+ 
+module load anaconda/2.7
+sh ~/Projects/PSYSCAN_data_curation/call_convert_to_NIfTI.sh
