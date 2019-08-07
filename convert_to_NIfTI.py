@@ -58,6 +58,11 @@ for image_dir in image_dirs :
         
         print ('Skipping ' + image_dir + ' as images are already in NIfTI format.')
         
+    # check for failed previous attempts at conversion to NIfTI    
+    elif os.path.exists(image_dir + '/conversion_error.txt') :
+        
+        print ('Skipping ' + image_dir + ' as it contains a conversion_error.txt file meaning a previous attempt to convert to NIfTI failed.')
+        
     # if the directory has no NIfTIs, try to convert the contents
     # write back into image dir
     else :
