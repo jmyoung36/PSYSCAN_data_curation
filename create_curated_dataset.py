@@ -22,11 +22,11 @@ metadata_dir = '/home/k1511004/Data/PSYSCAN/WP5_data/'
 qc_serieslabel_dict = {'RS-fMRI':'fMRI', '3D T1W':'sMRI'}
 
 # read in the extract spreadsheet
-extract = pd.read_excel(metadata_dir + 'PSYSCAN_spreadsheet_for_Harddisk-1.xlsx')
+extract = pd.read_excel(metadata_dir + 'PSYSCAN_spreadsheet_for_Harddisk-test-2.xlsx', keep_default_na=False)
 
 # apply any required filters
 extract = extract[extract['active'] == True]
-extract = extract[extract['qc_metadataqcgrade'].isin(['Fail', 'N/A', 'Advisory', 'Pass'])]
+extract = extract[extract['qc_metadataqcgrade'].isin(['Fail', 'N/A', 'NA', 'Advisory', 'Pass'])]
 # ...et cetera
 
 # extract the file paths and qc_serieslabels
@@ -36,11 +36,15 @@ qc_serieslabels = extract['qc_serieslabel'].tolist()
 # initialise a list for any missing directories we may find
 missing_dirs = []
 
+#print file_paths
+
 # loop through the file paths
 for i, file_path in enumerate(file_paths) :
     
     # check the file path exists
     if isdir(raw_data_dir + file_path) :
+        
+        #print raw_data_dir + file_path
         
         # split the file path so we can extract subject id, timepoint etc
         file_path_bits = file_path.split('/')
@@ -60,22 +64,26 @@ for i, file_path in enumerate(file_paths) :
 #        print 'qc_serieslabel: ' + qc_serieslabel
 #        print 'modality: ' + modality     
         
-       #  build an output directory location and mkdir if needed
+        # build an output directory location 
         output_dir = curated_data_dir + subjectid + '/' + timepoint + '/' + modality + '/' + subcategoryid + '/' + version
+        
+        # only proceed if output directory does not already exist
+        # so creation of the curated dataset is incremental rather than from scratch each time
         if not isdir(output_dir) :
             
+            # create output directory
             cmd = 'mkdir -p ' + output_dir
             system(cmd)
             
-        # copy files from file_path to output_dir
-        cmd = 'cp ' + raw_data_dir + file_path + '/* ' + output_dir + '/'
-        system(cmd)
+            # copy files from file_path to output_dir
+            cmd = 'cp ' + raw_data_dir + file_path + '/* ' + output_dir + '/'
+            system(cmd)
         
-        # add a note saying where the files came from
-        text_file = open(output_dir + '/original_directory.txt', "w")
-        text_file.write('Files were copied from the following directory:\n')
-        text_file.write(raw_data_dir + file_path)
-        text_file.close()
+            # add a note saying where the files came from
+            text_file = open(output_dir + '/original_directory.txt', "w")
+            text_file.write('Files were copied from the following directory:\n')
+            text_file.write(raw_data_dir + file_path)
+            text_file.close()
         
         
     else :
