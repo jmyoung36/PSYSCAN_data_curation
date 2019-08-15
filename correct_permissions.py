@@ -11,7 +11,7 @@ from os.path import isdir
 from glob import glob
 
 # set data dir
-raw_data_dir = '/data/project/PSYSCAN/curated_data_new/'
+raw_data_dir = '/data/project/PSYSCAN/curated_data/'
 
 # loop through the top level directories
 contents = glob(raw_data_dir + '*')
