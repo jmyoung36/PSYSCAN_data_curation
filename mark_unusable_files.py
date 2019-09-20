@@ -42,7 +42,7 @@ for i in range(n_dirs) :
         # loop through image dirs
         for image_dir in image_dirs :
             
-            # list the files
+            # list the filesg
             files  = listdir(image_dir)
             # filter out those txt files to leave only images
             image_files = filter(lambda x: not x[-3:] == 'txt', files)

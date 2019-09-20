@@ -14,7 +14,7 @@ import tarfile
 from convert_dir_to_NIfTI import convert_dir_to_NIfTI
 # set directories
 raw_data_dir = '/data/project/PSYSCAN/Raw_data_from_IXICO/'
-curated_data_dir = '/data/project/PSYSCAN/Jonathan/curated_data_test/'
+curated_data_dir = '/data/project/PSYSCAN/curated_data/'
 metadata_dir = '/home/k1511004/Data/PSYSCAN/WP5_data/'
 #metadata_dir = '/home/jonyoung/IoP_data/Data/PSYSCAN/WP5_data/'
 
@@ -22,17 +22,17 @@ metadata_dir = '/home/k1511004/Data/PSYSCAN/WP5_data/'
 # do we want to convert to NIfTI?
 convert_to_NIfTI = True
 # do we want to tar original files?
-archive_original_files = False
+archive_original_files = True
 
 # dict to translate qc_serieslabel to desired directory names
 # EXPAND THIS!!!
 qc_serieslabel_dict = {'RS-fMRI':'fMRI', '3D T1W':'sMRI'}
 
 # read in the extract spreadsheet
-extract = pd.read_excel(metadata_dir + 'PSYSCAN_spreadsheet_for_Harddisk-test-ET.xlsx', keep_default_na=False)
+extract = pd.read_excel(metadata_dir + 'PSYSCAN_spreadsheet_for_Harddisk-1.xlsx', keep_default_na=False)
 
 # apply any required filters
-extract = extract[extract['active'] == True]
+extract = extract[extract['active'] == 'true']
 extract = extract[extract['qc_metadataqcgrade'].isin(['Fail', 'N/A', 'NA', 'Advisory', 'Pass'])]
 # ...et cetera
 
@@ -41,11 +41,12 @@ file_paths = extract['filepath'].tolist()
 qc_serieslabels = extract['qc_serieslabel'].tolist()
 
 # initialise a list for any missing directories we may find
+
 missing_dirs = []
 
 # loop through the file paths
 for i, file_path in enumerate(file_paths) :
-    
+     
     # check the file path exists
     if isdir(raw_data_dir + file_path) :
         
@@ -118,6 +119,11 @@ for i, file_path in enumerate(file_paths) :
                     if not '.nii' in original_file : 
                         
                         remove(output_dir + '/' + original_file)
+                        
+        # directory already exists
+        else :
+            
+            print 'Directory ' + output_dir + ' already exists. Skipping it!'
                                
     else :
         

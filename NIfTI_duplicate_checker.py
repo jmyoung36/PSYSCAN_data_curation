@@ -85,7 +85,7 @@ def compare_dicts(filenames, header_dicts) :
     return filename_groups, differing_keys
                                             
 # set directory to look for dupes in   
-subject_duplicate_dir = '/home/jonyoung/IoP_data/Projects/TrialTrackerDownload/images/sMRI_duplicates_tidied/PSYF02001/'
+subject_duplicate_dir = '/data/project/PSYSCAN/curated_data/PSYU17009/Baseline/sMRI/'
 
 # set verbose option
 # if true, list all members of each group
@@ -98,7 +98,8 @@ for root, dirs, files in os.walk(subject_duplicate_dir) :
     for filename in files :
             
         # add any zipped niftis to the list                
-        if filename.split('.')[-2]  == 'nii' and filename.split('.')[-1]  == 'gz' :
+        #if filename.split('.')[-2]  == 'nii' and filename.split('.')[-1]  == 'gz' :
+        if filename[-3:]  == 'nii' or filename[-6:]  == 'nii.gz' :
                 
             NIfTI_files.append(os.path.join(root, filename))            
                 
