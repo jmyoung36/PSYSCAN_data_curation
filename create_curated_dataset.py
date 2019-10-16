@@ -29,10 +29,10 @@ archive_original_files = True
 qc_serieslabel_dict = {'RS-fMRI':'fMRI', '3D T1W':'sMRI'}
 
 # read in the extract spreadsheet
-extract = pd.read_excel(metadata_dir + 'PSYSCAN_spreadsheet_for_Harddisk-1.xlsx', keep_default_na=False)
+extract = pd.read_excel(metadata_dir + 'PSYSCAN_spreadsheet_for_Harddisk-1-restore-identical_dupes.xlsx', keep_default_na=False)
 
 # apply any required filters
-extract = extract[extract['active'] == 'true']
+extract = extract[extract['active'] == True]
 extract = extract[extract['qc_metadataqcgrade'].isin(['Fail', 'N/A', 'NA', 'Advisory', 'Pass'])]
 # ...et cetera
 
